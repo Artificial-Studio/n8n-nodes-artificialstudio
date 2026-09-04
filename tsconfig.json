@@ -15,9 +15,9 @@
 		"preserveConstEnums": true,
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
-		"incremental": true,
-		// Keep the build cache out of dist/ so it never ships in the package.
-		"tsBuildInfoFile": "./.tsbuildinfo",
+		// No incremental build: `n8n-node build` wipes dist/ before running tsc,
+		// so a build cache that outlives the wipe makes tsc think the outputs are
+		// still there and emit nothing — shipping a package with no JavaScript.
 		"declaration": true,
 		"sourceMap": true,
 		"skipLibCheck": true,
