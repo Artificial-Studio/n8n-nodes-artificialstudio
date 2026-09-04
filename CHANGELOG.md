@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1
+
+- Implement the webhook lifecycle hooks so the package passes the official n8n security scanner.
+- Declare public access so the published package carries an npm provenance statement.
+- Show the node in the actions panel: it was declaring the AI codex category, which marks a node as an agent sub-node and hid it from search.
+- Always emit compiled output: an incremental build cache that outlived the pre-build clean could produce a package with no JavaScript.
+
 ## 1.0.0
 
 Initial release.

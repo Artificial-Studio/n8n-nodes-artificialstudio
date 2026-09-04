@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-artificialstudio",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "n8n community node for Artificial Studio \u2014 generate images, video, audio and 3D with 150+ AI models from your workflows",
 	"license": "MIT",
 	"homepage": "https://artificialstudio.ai/plugins",
