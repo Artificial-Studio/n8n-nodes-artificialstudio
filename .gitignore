@@ -4,3 +4,4 @@ node_modules
 .tsbuildinfo
 .n8n-node
 .DS_Store
+.n8n-docker

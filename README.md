@@ -76,11 +76,25 @@ The node surfaces Artificial Studio errors with a readable message: invalid API 
 
 ```bash
 npm install
-npm run dev      # starts n8n with the node linked and hot reload
 npm run lint
 npm run build
 npm test
 ```
+
+To try the node in a real n8n, run one in Docker with this package installed:
+
+```bash
+./scripts/dev-docker.sh          # build, load into the container, restart
+./scripts/dev-docker.sh --fresh  # also wipe the n8n database and start over
+```
+
+n8n comes up on http://localhost:5678. Re-run the script after each change.
+`npm run dev` does the same thing without Docker, but it downloads several GB
+of n8n on first use.
+
+Inside the container `localhost` is the container itself. To point the
+credential at an Artificial Studio backend running on your machine, use
+`http://host.docker.internal:3001` as the Base URL.
 
 Releases are published from GitHub Actions with npm provenance (see `.github/workflows/publish.yml`). Run `npm run release` on a clean `main` to lint, build, bump the version, update the changelog, tag and push.
 
