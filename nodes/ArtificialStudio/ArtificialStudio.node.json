@@ -2,7 +2,10 @@
 	"node": "n8n-nodes-artificialstudio.artificialStudio",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
-	"categories": ["AI", "Marketing"],
+	"categories": [
+		"Marketing",
+		"Utility"
+	],
 	"resources": {
 		"credentialDocumentation": [
 			{
