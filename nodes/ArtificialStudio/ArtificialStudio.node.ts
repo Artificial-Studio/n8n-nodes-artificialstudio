@@ -1,6 +1,7 @@
 import type {
 	IDataObject,
 	IExecuteFunctions,
+	IHookFunctions,
 	ILoadOptionsFunctions,
 	INodeExecutionData,
 	INodePropertyOptions,
@@ -47,11 +48,6 @@ interface RunOptions {
 	webhookUrl?: string;
 }
 
-// The `webhooks` entry below is a resume endpoint (`restartWebhook`), not a
-// subscription registered on a third-party service: n8n mints the URL per
-// execution and the node hands it to the API on the run request, so there is
-// nothing to create, verify or delete. webhookMethods does not apply.
-// eslint-disable-next-line @n8n/community-nodes/webhook-lifecycle-complete
 export class ArtificialStudio implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Artificial Studio',
@@ -470,6 +466,26 @@ export class ArtificialStudio implements INodeType {
 				description: 'Whether the file shows up in your Artificial Studio library',
 			},
 		],
+	};
+
+	// The webhook declared above is a resume endpoint (`restartWebhook`): n8n mints
+	// the URL for a single execution and the node hands it to Artificial Studio on
+	// the run request, which calls it once and forgets it. There is no subscription
+	// on the API to register, verify or remove, so these hooks report "already in
+	// place" and succeed without doing anything. n8n requires every node that
+	// declares a webhook to define them.
+	webhookMethods = {
+		default: {
+			async checkExists(this: IHookFunctions): Promise<boolean> {
+				return true;
+			},
+			async create(this: IHookFunctions): Promise<boolean> {
+				return true;
+			},
+			async delete(this: IHookFunctions): Promise<boolean> {
+				return true;
+			},
+		},
 	};
 
 	methods = {
