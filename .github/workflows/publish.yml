@@ -1,0 +1,54 @@
+# Publishes the package to npm on every version tag push (e.g. 1.0.0).
+#
+# n8n requires community nodes to be published from GitHub Actions with an npm
+# provenance statement. Provenance lets anyone verify that a package was built
+# by this exact workflow, from this exact repository and commit.
+#
+# One-time setup on npmjs.com (package settings → Publish access → Trusted
+# Publishers → Add a publisher → GitHub Actions):
+#   Repository owner: Artificial-Studio
+#   Repository name:  n8n-nodes-artificialstudio
+#   Workflow name:    publish.yml
+# With that in place no NPM_TOKEN secret is needed. As a fallback, a granular
+# npm automation token stored as the NPM_TOKEN repository secret also works.
+#
+# Release process (interactive, from a clean main):
+#   npm run release
+# It lints, builds, bumps the version, updates the changelog, commits, tags and
+# pushes — the tag push triggers this workflow.
+
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Release
+        run: |
+          [ -n "$NPM_TOKEN" ] && npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
+          npm run release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

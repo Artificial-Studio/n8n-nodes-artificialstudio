@@ -1,0 +1,71 @@
+{
+	"name": "Artificial Studio: prompt form to image",
+	"nodes": [
+		{
+			"parameters": {
+				"formTitle": "Generate an image",
+				"formFields": {
+					"values": [
+						{
+							"fieldLabel": "Prompt",
+							"fieldType": "textarea",
+							"requiredField": true
+						}
+					]
+				},
+				"responseMode": "lastNode",
+				"options": {}
+			},
+			"name": "Prompt Form",
+			"type": "n8n-nodes-base.formTrigger",
+			"typeVersion": 2.2,
+			"position": [0, 0],
+			"webhookId": "artificial-studio-prompt-form"
+		},
+		{
+			"parameters": {
+				"tool": "create-image",
+				"prompt": "={{ $json.Prompt }}",
+				"wait": "poll",
+				"options": {
+					"download": true,
+					"binaryProperty": "data"
+				}
+			},
+			"name": "Artificial Studio",
+			"type": "n8n-nodes-artificialstudio.artificialStudio",
+			"typeVersion": 1,
+			"position": [260, 0],
+			"credentials": {
+				"artificialStudioApi": {
+					"id": "",
+					"name": "Artificial Studio API"
+				}
+			}
+		},
+		{
+			"parameters": {
+				"operation": "completion",
+				"respondWith": "returnBinary",
+				"completionTitle": "Here is your image",
+				"options": {}
+			},
+			"name": "Show Image",
+			"type": "n8n-nodes-base.form",
+			"typeVersion": 1,
+			"position": [520, 0],
+			"webhookId": "artificial-studio-prompt-form-result"
+		}
+	],
+	"connections": {
+		"Prompt Form": {
+			"main": [[{ "node": "Artificial Studio", "type": "main", "index": 0 }]]
+		},
+		"Artificial Studio": {
+			"main": [[{ "node": "Show Image", "type": "main", "index": 0 }]]
+		}
+	},
+	"settings": {
+		"executionOrder": "v1"
+	}
+}

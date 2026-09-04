@@ -1,0 +1,85 @@
+{
+	"name": "Artificial Studio: Telegram background remover",
+	"nodes": [
+		{
+			"parameters": {
+				"updates": ["message"],
+				"additionalFields": {
+					"download": true,
+					"imageSize": "large"
+				}
+			},
+			"name": "Telegram Trigger",
+			"type": "n8n-nodes-base.telegramTrigger",
+			"typeVersion": 1.2,
+			"position": [0, 0],
+			"webhookId": "artificial-studio-telegram-bg",
+			"credentials": {
+				"telegramApi": {
+					"id": "",
+					"name": "Telegram account"
+				}
+			}
+		},
+		{
+			"parameters": {
+				"tool": "remove-background",
+				"mediaInputs": {
+					"inputs": [
+						{
+							"field": "image_url",
+							"source": "binary",
+							"binaryProperty": "data"
+						}
+					]
+				},
+				"wait": "poll",
+				"options": {
+					"download": true,
+					"binaryProperty": "data",
+					"keepUploads": false
+				}
+			},
+			"name": "Remove Background",
+			"type": "n8n-nodes-artificialstudio.artificialStudio",
+			"typeVersion": 1,
+			"position": [260, 0],
+			"credentials": {
+				"artificialStudioApi": {
+					"id": "",
+					"name": "Artificial Studio API"
+				}
+			}
+		},
+		{
+			"parameters": {
+				"operation": "sendDocument",
+				"chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+				"binaryData": true,
+				"binaryPropertyName": "data",
+				"additionalFields": {}
+			},
+			"name": "Send Result",
+			"type": "n8n-nodes-base.telegram",
+			"typeVersion": 1.2,
+			"position": [520, 0],
+			"credentials": {
+				"telegramApi": {
+					"id": "",
+					"name": "Telegram account"
+				}
+			}
+		}
+	],
+	"connections": {
+		"Telegram Trigger": {
+			"main": [[{ "node": "Remove Background", "type": "main", "index": 0 }]]
+		},
+		"Remove Background": {
+			"main": [[{ "node": "Send Result", "type": "main", "index": 0 }]]
+		}
+	},
+	"settings": {
+		"executionOrder": "v1"
+	}
+}

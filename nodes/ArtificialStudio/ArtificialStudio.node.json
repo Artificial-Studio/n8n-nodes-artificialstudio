@@ -1,0 +1,18 @@
+{
+	"node": "n8n-nodes-artificialstudio.artificialStudio",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["AI", "Marketing"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://docs.artificialstudio.ai/getting-started/authentication"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/Artificial-Studio/n8n-nodes-artificialstudio#readme"
+			}
+		]
+	}
+}

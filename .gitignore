@@ -1,0 +1,6 @@
+dist
+node_modules
+*.tsbuildinfo
+.tsbuildinfo
+.n8n-node
+.DS_Store
